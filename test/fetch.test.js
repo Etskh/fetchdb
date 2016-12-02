@@ -24,4 +24,18 @@ describe('lib / fetchdb', function() {
     });
   });
 
+  it('inmemory database can add new items', function(done) {
+    const toInsert = {
+      name: 'some data'
+    };
+    const db = require('../lib/connectors/memory');
+    const oldCount = db(modelName).count();
+    const insertedElement = db(modelName).insert(toInsert);
+
+    expect(db(modelName).count()).toEqual( oldCount + 1);
+    toInsert.id = insertedElement.id;
+    expect(insertedElement).toEqual(toInsert);
+    done();
+  });
+
 });

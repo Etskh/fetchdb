@@ -2,7 +2,7 @@
   "name": "fetchdb",
   "version": "1.0.0",
   "description": "Just a database-connector for node that makes fetch happen",
-  "main": "fetchdb.js",
+  "main": "./lib/fetchdb.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
     "coverage": "./node_modules/.bin/istanbul cover --print both _mocha -- --recursive"
