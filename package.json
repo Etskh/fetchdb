@@ -1,0 +1,26 @@
+{
+  "name": "fetchdb",
+  "version": "1.0.0",
+  "description": "Just a database-connector for node that makes fetch happen",
+  "main": "fetchdb.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Etskh/fetchdb.git"
+  },
+  "author": "Etskh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Etskh/fetchdb/issues"
+  },
+  "homepage": "https://github.com/Etskh/fetchdb#readme",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.2"
+  }
+}
