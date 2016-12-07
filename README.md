@@ -8,7 +8,6 @@ Just a database for node that makes fetch happen
 ```javascript
 const userModel = require('fetchdb')('user');
 
-
 const createUser = function( username, password ) {
 
   // userModel.info( (info) => { info.count === 0 };
@@ -34,11 +33,14 @@ At any point, you may call `fetch('modelName').init(...)` to reset the connectio
 
 First we'll instantiate our model.
 ```javascript
+//
 // module: user.js
+//
 const fetch = require('fetchdb');
 const userModel = fetch('user');
 ```
-This is the magic bit: `init` will take an object for configuring that connection to the module - this way you can have separate connections for each model, but maintain cross-dependencies.
+
+This is the magic bit: `init` will take an object for configuring that connection to the module - this way you can have separate connections for each model, but maintain cross-dependencies. The schema bit will actually be of two uses: it lets us define what the table will look like (so we're not recreating the table in SQL every time we get a new field). Additionally, we can add methods to our controller, along with standard methods such as `save()`, `reload()`, and `delete()`.
 ```javascript
 userModel.init({
   db: {
@@ -55,6 +57,7 @@ userModel.init({
   },
 });
 ```
+
 Create an export of a method for this module. This method will first fetch the group with the name "admin", and we can use this object for checking permissions. 
 ```javascript
 /**
