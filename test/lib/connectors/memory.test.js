@@ -6,10 +6,10 @@ describe('lib/connectors/memory', function() {
 
   const memory = require('../../../lib/connectors/memory');
 
-  describe('#()', function() {
+  describe('#.create()', function() {
     it('will create a connector with functions', function(done) {
 
-      memory('this-is-a-new-model').then( (db) => {
+      memory.create('this-is-a-new-model').then( (db) => {
         expect(db.insert).toExist();
         expect(db.search).toExist();
         expect(db.remove).toExist();
@@ -25,7 +25,7 @@ describe('lib/connectors/memory', function() {
         username: 'admin',
         age: 23
       };
-      memory('myModel').then( (db) => {
+      memory.create('userthing').then( (db) => {
         db.insert( inputData ).then( (data) => {
           expect(data.id).toExist();
           expect(data.username).toEqual(inputData.username);
@@ -41,7 +41,7 @@ describe('lib/connectors/memory', function() {
       value: 0xB33F,
     };
     it('can search existing elements', function(done) {
-      memory('myModel').then( (db) => {
+      memory.create('userthing').then( (db) => {
         db.insert( inputData ).then( (data) => {
           db.search({ value: inputData.value }).then( (elements) => {
             expect(elements.length).toEqual(1);
@@ -57,7 +57,7 @@ describe('lib/connectors/memory', function() {
       value: 0xFACE,
     };
     it('can remove existing elements', function(done) {
-      memory('myModel').then( (db) => {
+      memory.create('userthing').then( (db) => {
         db.insert( inputData ).then( (data) => {
           db.remove({ value: inputData.value }).then( (count) => {
             expect(count).toEqual(1);
@@ -78,7 +78,7 @@ describe('lib/connectors/memory', function() {
     };
     const newValue = 0xBEEF;
     it('can update existing elements', function(done) {
-      memory('myModel').then( (db) => {
+      memory.create('userthing').then( (db) => {
         db.insert( inputData ).then( (data) => {
           db.update({ value: newValue }, { value: inputData.value }).then( (count) => {
             expect(count).toEqual(1);

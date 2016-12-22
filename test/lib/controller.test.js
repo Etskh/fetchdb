@@ -9,7 +9,8 @@ describe('lib/controller', function() {
   describe('#.create()', function() {
     it('can create a controller from a db, data, and methods', function(done) {
 
-      const db = {};
+      const db = {
+      };
       const data = {
         id: 1,
         username: 'admin',

@@ -86,4 +86,18 @@ describe('lib/fetchdb', function() {
       }).catch(done);
     });
   });
+  describe('#search()', function() {
+    it('will return an array of controllers', function(done) {
+      // just sets things and returns immediately
+      // uses default memory database
+      const userModel = fetchdb('user');
+
+      // Create a new entry in the model
+      userModel.search({ username: userData.username })
+      .then( ( userControllers ) => {
+        expect(userControllers.length).toEqual(1);
+        done();
+      }).catch(done);
+    });
+  });
 });
