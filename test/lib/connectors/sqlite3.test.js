@@ -13,6 +13,7 @@ describe('lib/connectors/sqlite3', function() {
     password: 'string',
     age: 'number',
   };
+  const sqlite = sqliteDb.create('myModel', config, schema );
 
 
   describe('#create()', function() {
@@ -30,13 +31,12 @@ describe('lib/connectors/sqlite3', function() {
 
   describe('#.insert()', function() {
     it('can insert a new data-point', function(done) {
-      const sqlite = sqliteDb.create('myModel', config, schema );
       const inputData = {
         username: 'admin',
         password: 'pass1',
         age: 23
       };
-      sqlite.then( (db) => {
+      sqlite.then( db => {
         return db.insert( inputData ).then( (data) => {
           expect(data.id).toExist();
           expect(data.username).toEqual(inputData.username);
@@ -49,12 +49,11 @@ describe('lib/connectors/sqlite3', function() {
 
   describe('#.search()', function() {
     const inputData = {
-      username: 'new user',
+      username: 'searchable-user',
       password: 'pass1',
       age: 23
     };
     it('can search existing elements', function(done) {
-      const sqlite = sqliteDb.create('myModel', config, schema );
       sqlite.then( (db) => {
         return db.insert( inputData ).then( (data) => {
           return db.search({ username: inputData.username }).then( (elements) => {
@@ -68,12 +67,11 @@ describe('lib/connectors/sqlite3', function() {
 
   describe('#.remove()', function() {
     const inputData = {
-      username: 'removed user',
+      username: 'removed-user',
       password: 'pass1',
       age: 23,
     };
     it('can remove existing elements', function(done) {
-      const sqlite = sqliteDb.create('myModel', config, schema );
       sqlite.then( (db) => {
         return db.insert( inputData ).then( (data) => {
           return db.remove({ username: inputData.username }).then( (count) => {
@@ -91,20 +89,19 @@ describe('lib/connectors/sqlite3', function() {
 
   describe('#.update()', function() {
     const inputData = {
-      username: 'not updated user',
+      username: 'not-updated-user',
       password: 'pass1',
       age: 23,
     };
-    const newName = 'updated user';
+    const newName = 'updated-user';
     it('can update existing elements', function(done) {
-      const sqlite = sqliteDb.create('myModel', config, schema );
       sqlite.then( (db) => {
         return db.insert( inputData ).then( (data) => {
           return db.update({ username: newName }, { username: inputData.username }).then( (count) => {
             expect(count).toEqual(1);
             return db.search({ username: newName }).then( (elements) => {
               expect(elements.length).toEqual(1);
-              expect(elements[0].value).toEqual(newName);
+              expect(elements[0].username).toEqual(newName);
               done();
             });
           });
