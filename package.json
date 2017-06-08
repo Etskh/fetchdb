@@ -2,7 +2,7 @@
   "name": "fetchdb",
   "version": "1.0.0",
   "description": "Just a database-connector for node that makes fetch happen",
-  "main": "./lib/fetchdb.js",
+  "main": "./lib/fetch.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
     "lint": "./node_modules/.bin/eslint lib",

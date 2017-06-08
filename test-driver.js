@@ -8,28 +8,45 @@ const dbConfig = {
   filename: './db.sqlite3',
   type: 'sqlite3',
 };
+
+
+
+const permissionModelSchema = {
+  db: dbConfig,
+  schema: {
+    code: 'string',
+    description: 'string',
+  },
+};
 const groupModelSchema = {
-  name: 'string',
+  db: dbConfig,
+  schema: {
+    name: 'string',
+    description: 'string',
+  },
 };
 const userModelSchema = {
-  username: 'string',
-  password: 'string',
-  authenticate: (password) => {
-    return this.password === crypt(password);
+  db: dbConfig,
+  schema: {
+    username: 'string',
+    password: 'string',
+    group: fetchdb.foreignKey('group'),
   },
-  //group: fetchdb.oneToMany('group'),
+  methods: {
+    authenticate: (self, password) => {
+      return self.password === password;
+    },
+  },
 };
 
 
-const adminData = {
-  username: 'admin',
-  password: 'asdf1',
-};
 
-const groupModel = fetchdb('group', {db: dbConfig, schema: groupModelSchema });
-const userModel = fetchdb('user', {db: dbConfig, schema: userModelSchema });
+const permissionModel = fetchdb('permission', permissionModelSchema);
+const groupModel = fetchdb('group', groupModelSchema);
+const userModel = fetchdb('user', userModelSchema);
 
-console.log(fetchdb('user') === userModel );
+
+//fetch('group').loadFixtures('name', )
 
 
 function getOrCreateAdminGroup() {
@@ -37,16 +54,20 @@ function getOrCreateAdminGroup() {
   return groupModel.search({ name: 'admin' }).then( groups => {
     if( groups.length === 0 ) {
       return groupModel.create({
-        name: 'admin'
+        name: 'admin',
+        description: 'Base manager of system',
       });
     }
     return groups[0];
   });
 }
 
-
-
 function getOrCreateAdmin( adminGroup ) {
+  const adminData = {
+    username: 'admin',
+    password: 'asdf1',
+    group: adminGroup,
+  };
   // Get the admin, or create one if it doesn't exist
   return userModel.search({ username: adminData.username }).then( users => {
     if( users.length === 0 ) {
@@ -60,10 +81,17 @@ getOrCreateAdminGroup()
 .then( getOrCreateAdmin )
 .then( admin => {
   logger.info({admin: admin});
-  admin.password = Math.random().toString();
+  admin.password = 'empire';
   return admin.save();
 }).then( admin => {
-  console.log('randomized the pw');
+  if ( admin.authenticate('empire')) {
+    console.log('Password works!');
+  }
+  else {
+    console.log('Password DOESNT WORK');
+  }
 }).catch( err => {
   logger.error(err);
 });
+
+//*/
